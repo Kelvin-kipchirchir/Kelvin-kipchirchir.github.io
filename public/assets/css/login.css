@@ -1,0 +1,78 @@
+body {
+  /*background: #ffffff;
+  color: #898989;*/
+  background-color: #e1f6fb;
+  font-family: "Poppins", helvetica;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 0.02em;
+  overflow-x: hidden;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+.btn {
+  background: #333;
+  border: medium none;
+  border-radius: 0;
+  color: #fff;
+  font-size: 12px;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 30px;
+  text-transform: uppercase;
+}
+
+.btn:hover,
+.btn:focus {
+  color: #fff;
+}
+.form-control {
+  background-color: transparent;
+  border: 1px solid #999;
+  border-radius: 0;
+  color: #999999;
+  font-size: 12px;
+  font-weight: 500;
+  height: 50px;
+  letter-spacing: 0.1em;
+  padding-left: 10px;
+  margin: 0 0 25px 0;
+  line-height: 14px;
+}
+.register-link{
+      font-size: 14.5px;
+      text-align: center;
+      margin-top: 20px 0 15px;
+  }
+ .register-link p a{
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+  }
+  .register-link p a:hover{
+      text-decoration: underline;
+  }
+
+.form-control:focus {
+  box-shadow: none;
+  outline: 0 none;
+}
+.checkbox{
+      display: flex;
+      justify-content: space-between;
+      font-size: 14.5px;
+      margin: -15px 0 15px;
+  }
+  .remember-forgot label input{
+      margin-right: 4px;
+    
+  }
+  .remember-forgot a{
+      color: #fff;
+      text-decoration: none;
+  }
+  .remember-forgot a:hover{
+      text-decoration: underline;
+  }
