@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Mail\ContactMail;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
+use App\Mail\SendMessageToEndUser;
 
 class AccountController extends Controller
 {
@@ -20,10 +24,11 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() : View
     {
         return view('auth.login');
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -43,13 +48,19 @@ class AccountController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
+        $user = User::where('email','=',$request->email)->first();
         $credentials = $request->only('email','password');
-         if (Auth::attempt($credentials)) {
-            $userinfo = $request->session()->put('email','name');
-            return redirect()->intended('dashboard')->withSuccess('Signed in');
-        }
-        $validator['emailPassword'] = 'Email address or password is incorrect.';
-        return redirect('login')->withErrors($validator);
+        if($user){
+            if(Auth::attempt($credentials)){
+                $request->session()->put('loginId', $user->id);
+                $userinfo = $request->session()->put('email','name');
+                return redirect()->intended('dashboard')->withSuccess('Signed in');
+            } else {
+                return back()->with('fail','Password not match!');
+            }
+        } else {
+            return back()->with('fail','This email is not register.');
+        } 
     }
     public function create(array $data)
     {
@@ -141,15 +152,23 @@ class AccountController extends Controller
      */
     public function destroy()
     {
-        Session::flush();
-        Auth::logout();
-        return view('auth.logout')->with('success','Logout successfully!!!');;
-    }
-    public function dashboard(){
-        if (Auth::check()) {
-            return view('pages.dashboard');
+        $data = array();
+        if(Session::has('loginId')){
+            Session::pull('loginId');
+            return redirect('login')->with('success','Logout successfully!!!');
         }
-        return redirect('login')->withSuccess("you are not allowed to access");
+    }
+    
+    public function dashboard(){
+         $data = array();
+        if(Session::has('loginId')){
+            $data = User::where('id','=',Session::get('loginId'))->first();
+        }
+         return view('Pages.dashboard',compact('data'));
+    //     if (Auth::check()) {
+    //         return view('pages.dashboard');
+    //     }
+    //     return redirect('login')->withSuccess("you are not allowed to access");
     }
     public function sendMail(Request $request){
         $validated = $request ->validate([
@@ -158,8 +177,62 @@ class AccountController extends Controller
             'subject' => 'required',
             'message' => 'required|min:3'
         ]);
-        //Mail::to('kipchirchir1998@gmail.com')->send(new ContactMail($validated));
+       
+        // $data = array('name'=>"kelvin kipchirchir");
+        // Mail::send($request->email, $data, function($message) {
+        // $send_mail = "kipchirchir1998@gmail.com";
+        // $message->to($send_mail, $request->message)->subject($request->subject);
+        // $message->from($request->email,$request->name);
+        // });
+        $send_mail = "kipchirchir1998@gmail.com";
+        Mail::to($send_mail)->send(new ContactMail($validated));
+        $senderMessage = "thanks for your message";
+        Mail::to($request->email)->send(new SendMessageToEndUser($validated));
         return back()->with('success','message sent successfully');
 
+    }
+    //-----------------------forget password------------------
+    public function forgetPassword(){
+
+        return view('auth.forgetpassword');
+    }
+    public function submitPassword(Request $request){
+       
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+        $token = Str::random(64);
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+        Mail::send('emails.forgetPassword',['token' => $token],function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Reset Password');
+        });
+        return back()->with('success','we have emailed you password reset link');
+    }
+    public function showResetForm($token){
+        return view('auth.forgetPasswordLink',['token' => $token]);
+    }
+    public function submitReset(Request $request){
+         $request->validate([
+            'email' => 'required|email|exists:users',
+            'password' => 'required|max:50|min:8',
+            'password_confirmation' => 'required'
+        ]);
+        
+       $updatePassword = DB::table('password_resets')->where([
+        'email' => $request->email,
+        'token' => $request->token
+       ])->first();
+       if(!$updatePassword){
+        return back()->withInput()->with('error','invalid token');
+       }
+       $user = User::where('email',$request->email)->update([
+        'password' => Hash::make($request->password)]);
+       DB::table('password_resets')->where(['email' => $request->email])->delete();
+       return redirect('login')->with('success','your password has been changed');
     }
 }

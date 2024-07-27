@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers;
 use App\Models\Skill;
 use App\Models\User;
 use App\Models\Experience;
@@ -8,6 +9,7 @@ use App\Models\Education;
 use App\Models\Project;
 use App\Models\Certification;
 use App\Models\Profile;
+use Illuminate\Support\Facades\Hash;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +20,6 @@ use App\Models\Profile;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
 	$details = User::all();
 	$profile_pic = Profile::all();
@@ -26,33 +27,49 @@ Route::get('/', function () {
     return view('index',compact('details','projects','profile_pic'));
 });
 
-Route::get('login','AccountController@index')->name('login');
-Route::post('login.custom','AccountController@customLogin')->name('login.custom');
-Route::get('register','AccountController@newAccount')->name('register');
+Route::controller(AccountController::class)->group(function(){
+	//reset password
+	//Route::get('login','index')->middleware('alreadyLoggedIn')->name('login');
+	Route::get('forget-password','forgetPassword')->name('forget.password.get');
+	Route::post('forget-password','submitPassword')->name('forget.password.post');
+	Route::get('reset-password/{token}','showResetForm')->name('reset.password.get');
+	Route::post('reset-password','submitReset')->name('reset.password.post');
 
-Route::post('register.custom','AccountController@store')->name('register.custom');
-Route::get('dashboard','AccountController@dashboard')->name('dashboard');
-Route::get('signout','AccountController@destroy')->name('signout');
-Route::get('add.profile_pic','AccountController@profile_pic')->name('add.profile_pic');
-Route::post('register.profile_pic/{name}','AccountController@storeprofile_pic')->name('register.profile_pic');
+ //Route::get('registration','registration')->middleware('alreadyLoggedIn')->name('register');
+ Route::get('login','index')->name('login');
+
+	Route::get('view.profile/{ow}','show')->name('view.profile');
+    Route::post('update.profile/{profile}','update')->name('update.profile');
+	Route::post('login.custom','customLogin')->name('login.custom');
+    //Route::get('register','newAccount')->middleware('alreadyLoggedIn')->name('register');
+
+    Route::post('register.custom','store')->name('register.custom');
+    Route::get('dashboard','dashboard')->middleware('isLoggedIn')->name('dashboard');
+    Route::get('signout','destroy')->name('signout');
+    Route::get('add.profile_pic','profile_pic')->name('add.profile_pic');
+    Route::post('register.profile_pic/{name}','storeprofile_pic')->name('register.profile_pic');
+});
 
 
 
-Route::post('register.project','ProjectController@store')->name('register.project');
-Route::get('newproject','ProjectController@index')->name('newproject');
-Route::get('view.projects','ProjectController@show')->name('view.projects');
-Route::get('project.destroy/{id}','ProjectController@destroy')->name('project.destroy');
-Route::get('project.more/{id]','ProjectController@projectMore')->name('project.more');
-Route::get('certification.more/{id}','ResumeController@certMore')->name('certification.more');
-Route::get('certification.destroy/{id}','ResumeController@destroyCert')->name('certification.destroy');
-Route::post('cert.update/{cert}','ResumeController@updateCert')->name('cert.update');
-
+Route::controller(ProjectController::class)->group(function(){
+Route::post('register.project','store')->name('register.project');
+Route::get('newproject','index')->name('newproject');
+Route::get('view.projects','show')->name('view.projects');
+Route::get('project.destroy/{id}','destroy')->name('project.destroy');
+Route::get('project.more/{id]','projectMore')->name('project.more');
+Route::get('project.moredetails/{id}','moreDetails')->name('project.moredetails');
+});
+Route::controller(ResumeController::class)->group(function(){
+Route::get('certification.more/{id}','certMore')->name('certification.more');
+Route::get('certification.destroy/{id}','destroyCert')->name('certification.destroy');
+Route::post('cert.update/{cert}','updateCert')->name('cert.update');
+});
 //
-Route::get('project.moredetails/{id}','ProjectController@moreDetails')->name('project.moredetails');
 
 
-Route::get('view.profile/{ow}','AccountController@show')->name('view.profile');
-Route::post('update.profile/{profile}','AccountController@update')->name('update.profile');
+
+
 Route::get('view.education','ResumeController@viewEducation')->name('view.education');
 Route::get('view.experience','ResumeController@viewExperience')->name('view.experience');
 Route::get('view.certificate','ResumeController@viewCertificate')->name('view.certificate');

@@ -6,10 +6,10 @@
 		<div class="row justify-content-center">
 			<div class="col-md-5">
 				<div class="card">
-					<h3 class="card-header text-center">LOGIN</h3>
+					<h3 class="card-header text-center">RESET PASSWORD</h3>
 						<div class="card-body">
 							<div>
-							<form method="POST" action="{{ route('login.custom')}}">
+							<form method="POST" action="{{route('forget.password.post')}}">
 								@csrf
 								@if (Session::has('success'))
                                  <div class="alert alert-success">
@@ -20,40 +20,21 @@
                                <div class="alert alert-danger">
                                    {{Session::get('fail')}}
                               </div>
-                                @endif
+                              @endif
 								<div class="form-group mb-3">
-									<input type="text" name="email" id="email" placeholder="email" class="form-control">
+									<input type="email" name="email" placeholder="email" class="form-control" >
 									<span class="text-danger">
                                              @error('email')
                                              {{$message}}
                                              @enderror
                                             </span>
 								</div>
-								<div class="form-group mb-3">
-									<input type="password" name="password" id="password" placeholder="password" class="form-control">
-									<span class="text-danger">
-                                             @error('password')
-                                             {{$message}}
-                                             @enderror
-                                            </span>
-								</div>
-
-									<div class="form-group mb-3">
-										<div class="checkbox">
-											<label>
-												<input type="checkbox" name="remember" >Remember me
-											</label>
-											<a href="{{route('forget.password.get')}}" class = "remember-forgot" >Reset Password</a>
-										</div>
-									</div>
 									<div class="d-grid mx-auto">
-										<button type="submit" class="btn btn-success btn-block">Signin</button>
+										<button type="submit" class="btn btn-dark btn-block">Send Password Reset Link</button>
 									</div>
 									
                    
-									<div class="register-link">
-						            <p>Don't have account??</p><a href="#">Register</a>
-					                </div>
+									
 
 							</form>
 						</div>

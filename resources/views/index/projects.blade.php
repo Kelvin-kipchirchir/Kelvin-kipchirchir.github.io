@@ -103,7 +103,7 @@
 
           <div class="col-lg-4" style="border:2px solid #e7e7e7;border-radius: 4px;padding: .5rem;box-shadow: 0 2px 2px rgba( 0,0,0,0.15);">
             <div class="portfolio-info">
-              <h3>PROJECT INFORMATION</h3>
+              <h4>PROJECT INFORMATION</h4>
               <ul>
                 <li><strong>Project Name</strong>: {{$detail->project_name}}</li>
                 <li><strong>Category</strong>: {{$detail->category}}</li>
@@ -114,7 +114,7 @@
               </ul>
             </div>
             <div class="portfolio-description">
-              <h2>PROJECT SUMMARY</h2>
+              <h4>PROJECT SUMMARY</h4>
               <p>
                 {{$detail->details}}
               </p>

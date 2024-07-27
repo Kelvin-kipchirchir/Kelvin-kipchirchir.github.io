@@ -346,10 +346,20 @@
           </div>
               </div>
             </div>
-               @include('inc.messages')
+             
             <div class="col-lg-6">
               <form action="{{ route('mail.submit')}}" method="post" >
                 @csrf
+                @if (Session::has('success'))
+                                 <div class="alert alert-success">
+                                  {{Session::get('success')}}
+                                </div>
+                                @endif
+                                @if (Session::has('fail'))
+                               <div class="alert alert-danger">
+                                   {{Session::get('fail')}}
+                              </div>
+                                @endif
                 <div class="row gy-3">
 
                   <div class="col-lg-6">

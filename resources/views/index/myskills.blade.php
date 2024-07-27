@@ -13,6 +13,7 @@
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
+  
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,500,500i,600,600i,700,700i,900,900i" rel="stylesheet">
 
@@ -62,8 +63,35 @@
   </header><!-- End Header -->
 <hr><hr><hr><hr>
   <main id="main">
+     <div class="row justify-content-center" style="margin-left: 300px;">
+                   <h3>Skills</h3>
+                  </div>
 @foreach($skills as $skill)
     <!-- ======= Blog Single ======= -->
+
+ <!-- <div class="item-container" style="margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2em;">
+   <div class="card" style=" text-align: center;
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    padding: 1em;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
+      <img src="{{url ('public/images/'.$skill->icon)}}" style="width: 100px;height: 100px;"  alt="" >
+        <h4><a href="#">{{$skill->skill}}</a></h4>
+        <div class="post-meta">
+                        <ul class="list-unstyled mb-0">
+                          <li class="date">Category:<a href="#">{{$skill->category}}</a></li>
+                          <li class="date">Experience:<a href="#">{{$skill->rate}}%</a>
+                        </ul>
+                      </div>
+   </div>
+ </div> -->
+
+
     <div>
       <div class="container">
         <div class="row justify-content-center">
@@ -71,23 +99,25 @@
             <div class="row">
               <div class="container-main single-main">
                 <div class="col-md-12" >
+                 
                   <div class="block-main mb-3" style="background-color: red">
 
                     </div>
+                   
                     <section class="cards" style="display: grid;grid-template-columns: (auto-fill,minmax(250px,1fr);grid-auto-rows: minmax(200px,auto);grid-gap: 1rem);" >
                       <article class="card" style="border:2px solid #e7e7e7;border-radius: 4px;padding: .5rem;box-shadow: 0 2px 2px rgba( 0,0,0,0.15);display: flex;">
                         <picture class="thumbnail" >
+                          
                           <img class="category_01" src="{{url ('public/images/'.$skill->icon)}}" style="display: block;border:0;width: 10%;height: auto;" class="img-responsive" alt="" >
+                       
                     <div class="content-main single-post padDiv">
                            <h4><a href="#">{{$skill->skill}}</a></h4>
-                           
-                        </header>
                         </picture>
-                        <header>
+                      
                         <div class="post-meta">
                         <ul class="list-unstyled mb-0">
                           <li class="date">Category:<a href="#">{{$skill->category}}</a></li>
-                          <li class="date">Experience:<a href="#">{{$skill->rate}}</a>
+                          <li class="date">Experience:<a href="#">{{$skill->rate}}%</a>
                         </ul>
                       </div>
                          
@@ -108,7 +138,9 @@
     </div>
                 <!-- End Blog Single -->
 @endforeach
-<h1>Certification</h1>
+<div class="row justify-content-center" style="margin-left: 300px;">
+                   <h3>Certification</h3>
+                  </div>
 @foreach($certification as $certification)
 <div>
       <div class="container">
