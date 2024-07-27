@@ -3,7 +3,8 @@
 	"framework":null,
 	"functions":{
 		"api/index.php":{
-			"runtime":"vercel-php@0.6.0"}
+			"runtime":"vercel-php@0.6.1 - Node 18.x / PHP 8.2.x"}
+
 	},
 	"routes": [{
 		"src" : "/(.*)",
