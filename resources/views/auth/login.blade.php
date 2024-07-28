@@ -6,7 +6,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-5">
 				<div class="card">
-					<h3 class="card-header text-center">LOGIN</h3>
+					<h3 class="card-header text-center">Sign In</h3>
 						<div class="card-body">
 							<div>
 							<form method="POST" action="{{ route('login.custom')}}">
@@ -52,7 +52,7 @@
 									
                    
 									<div class="register-link">
-						            <p>Don't have account??</p><a href="#">Register</a>
+						            <p>Don't have account??</p><a href="{{route('register')}}">Register</a>
 					                </div>
 
 							</form>

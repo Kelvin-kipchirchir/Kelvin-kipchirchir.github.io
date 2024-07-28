@@ -84,10 +84,14 @@ class AccountController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|max:50|min:8'
         ]);
+         if (!Auth::check() || Auth::user()->id == 1){
+              return redirect('login')->withSuccess("sorry You cannot create an account here");
+    }else{
         $data = $request->all();
         $check = $this->create($data);
-        return redirect('login')->withSuccess("You have signed in");
+    return redirect('login')->withSuccess("You have signed in");
     }
+          }
 
     /**
      * Display the specified resource.

@@ -1,0 +1,10 @@
+
+<IfModule mod_rewrite.c>
+       
+
+       RewriteEngine on
+       RewriteBase/
+       
+       RewriteRule ^(.*)$ portfolio/public/$1 [L]
+       RewriteRule ^-$public/index.php[L]
+</IfModule>

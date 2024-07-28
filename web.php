@@ -20,12 +20,17 @@ use Illuminate\Support\Facades\Hash;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
+/*Route::get('/', function () {
 	$details = User::all();
 	$profile_pic = Profile::all();
 	$projects = Project::all();
     return view('index',compact('details','projects','profile_pic'));
 });
+*/
+Route::get('/',function (){
+    return view('welcome');
+});
+
 
 Route::controller(AccountController::class)->group(function(){
 	//reset password
